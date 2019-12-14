@@ -57,7 +57,8 @@ class SortingRobot:
         """
         self._time += 1
         # Swap the held item with the list item at the robot's position
-        self._item, self._list[self._position] = self._list[self._position], self._item
+        self._item, self._list[self._position] = \
+            self._list[self._position], self._item
 
     def compare_item(self):
         """
@@ -81,11 +82,13 @@ class SortingRobot:
         Turn on the robot's light
         """
         self._light = "ON"
+
     def set_light_off(self):
         """
         Turn off the robot's light
         """
         self._light = "OFF"
+
     def light_is_on(self):
         """
         Returns True if the robot's light is on and False otherwise.
@@ -97,7 +100,39 @@ class SortingRobot:
         Sort the robot's list.
         """
         # Fill this out
-        pass
+
+        while True:
+
+            # Pick the item at current location for comparison
+            self.swap_item()
+
+            # Move to the right and find the lowest possible value.
+            while self.can_move_right():
+                self.move_right()
+
+                # Swap if the item's value on hands is greater
+                if self.compare_item() == 1:
+                    self.swap_item()
+
+            # If None is at the last position it means the list is
+            # sorted, end the loop.
+            if self.compare_item() is None:
+                self.swap_item()
+                break
+
+            # The lowest element needs to be placed at position of None;
+            # Break the loop at this point.
+            while self.can_move_left():
+                self.move_left()
+
+                if self.compare_item() is None:
+                    self.swap_item()
+                    break
+
+            # For the next iteration, it should pick an element to
+            # the right; moving the pointer by 1.
+            if self.can_move_right():
+                self.move_right()
 
 
 if __name__ == "__main__":
